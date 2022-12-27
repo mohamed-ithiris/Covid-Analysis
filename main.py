@@ -1,4 +1,57 @@
-# import pandas as pd
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+def case_per_country():
+    while True:
+        try:
+            print("Please, enter one of the following continent names:")
+            print(
+                "North America, South America, Asia, Europe, Africa, Australia/Oceania")
+            userInput = input("Please type the continents's name:")
+            continents = [
+                "North America",
+                "South America",
+                "Asia",
+                "Europe",
+                "Africa",
+                "Australia/Oceania"
+            ]
+            if (userInput in continents):
+                data = pd.read_csv(
+                    "./worldometer_data.csv",
+                    usecols=[
+                        'Country/Region',
+                        'Continent',
+                        'TotalCases',
+                        'TotalRecovered',
+                        'TotalDeaths'
+                    ]
+                )
+                filterContinent = data['Continent'] == userInput
+
+                # get filtered data
+                filtered_data = data[filterContinent]
+                country_list = filtered_data['Country/Region']
+                total_cases = filtered_data['TotalCases']
+                total_deaths = filtered_data['TotalDeaths']
+                total_recovered = filtered_data['TotalRecovered']
+
+                x_axis = country_list.tolist()
+                y_axis_total_cases = total_cases.tolist()
+                y_axis_total_deaths = total_deaths.tolist()
+                y_axis_total_recovered = total_recovered.tolist()
+
+                # stacked barplot
+                plt.bar(x_axis, y_axis_total_cases, color='b')
+                plt.bar(x_axis, y_axis_total_deaths, color='r')
+                plt.bar(x_axis, y_axis_total_recovered, color='g')
+                plt.show()
+                break
+            else:
+                print("Enter valid continents name")
+        except ValueError:
+            print("Enter valid continents name")
 
 
 def main():
@@ -14,15 +67,12 @@ def main():
         try:
             val = float(userInput)
             if (val == 1):
-                print("Please, enter one of the following continent names:")
-                print(
-                    "North America, South America, Asia, Europer, Africa, Australia/Oceania")
-                print("Please type the continents's name")
+                case_per_country()
                 break
             elif (val == 2):
                 print("Please, enter one of the following continent names:")
                 print(
-                    "North America, South America, Asia, Europer, Africa, Australia/Oceania")
+                    "North America, South America, Asia, Europe, Africa, Australia/Oceania")
                 print("Please type the continents's name")
                 break
             elif (val == 3):
@@ -33,6 +83,7 @@ def main():
                 print("Ireland, USA, India, Brazil, Japan, Australia")
                 break
             elif (val == 5):
+                print("Existed")
                 break
             elif (val > 5 or val < 1):
                 print("Enter number between 1 to 5!")
