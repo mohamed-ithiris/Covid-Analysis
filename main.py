@@ -43,6 +43,11 @@ def case_per_country():
                 y_axis_total_deaths = total_deaths.tolist()
                 y_axis_total_recovered = total_recovered.tolist()
 
+                print("Country with most number of cases:",
+                      filtered_data["Country/Region"].iloc[0], "-", filtered_data["TotalCases"].iloc[0])
+                print("Country with least number of cases:",
+                      filtered_data["Country/Region"].iloc[-1], "-", filtered_data["TotalCases"].iloc[-1])
+
                 # stacked barplot
                 plt.bar(x_axis, y_axis_total_cases, color='b')
                 plt.bar(x_axis, y_axis_total_deaths, color='r')
@@ -120,10 +125,9 @@ def test_per_contitent():
 
             for continent in continent_list:
                 filtered_data = csv_data[csv_data['Continent'] == continent]
-                print(continent,"-",filtered_data["Continent"].count())
+                print(continent, "-", filtered_data["Continent"].count())
                 x_axis.append(continent)
                 y_axis.append(filtered_data["Tests/1M pop"].sum())
-
 
             plt.bar(
                 x_axis,
