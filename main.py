@@ -211,9 +211,9 @@ def main():
                 application_exit()
                 break
             elif (val > 5 or val < 1):
-                print("Enter number between 1 to 5!")
+                print("*******Enter number between 1 to 5!*******")
         except ValueError:
-            print("Enter number between 1 to 5!")
+            print("*******Enter number between 1 to 5!*******")
 
 
 main()
