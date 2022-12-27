@@ -47,6 +47,9 @@ def case_per_country():
                 plt.bar(x_axis, y_axis_total_cases, color='b')
                 plt.bar(x_axis, y_axis_total_deaths, color='r')
                 plt.bar(x_axis, y_axis_total_recovered, color='g')
+                plt.xlabel("Country")
+                plt.ylabel("Cases")
+                plt.title("Case per country in a specific continent")
                 plt.show()
                 break
             else:
@@ -105,16 +108,38 @@ def test_per_contitent():
                 usecols=[
                     'Country/Region',
                     'Continent',
-                    'TotalRecovered',
-                    'TotalDeaths'
+                    "Tests/1M pop"
                 ]
             )
-            df = pd.DataFrame(
-                csv_data,
-                columns=['Continent']
+
+            unique_continent = pd.DataFrame(
+                csv_data).Continent.unique().tolist()
+            continent_list = [x for x in unique_continent if str(x) != 'nan']
+            entries_by_continent = []
+            x_axis = []
+            y_axis = []
+
+            for continent in continent_list:
+                filtered_data = csv_data[csv_data['Continent'] == continent]
+                dict_row1 = {continent: filtered_data["Continent"].count()}
+                entries_by_continent.append(dict_row1)
+                x_axis.append(continent)
+                y_axis.append(filtered_data["Tests/1M pop"].sum())
+
+            print(entries_by_continent)
+            print(x_axis)
+            print(y_axis)
+            
+            plt.bar(
+                x_axis,
+                y_axis,
+                color='maroon',
+                width=0.4
             )
-            duplicate = df[df.duplicated()].count()
-            print(duplicate)
+            plt.xlabel("Continent")
+            plt.ylabel("Tests/1M pop")
+            plt.title("Number of tests per continent")
+            plt.show()
             break
         except ValueError:
             print("Enter valid continents name")
@@ -146,7 +171,7 @@ def daily_vaccination():
 
                 filterContinent = csv_data['country'] == userInput
                 filtered_data = csv_data[filterContinent]
-                filtered_data.plot( 'date' , 'daily_vaccinations' )
+                filtered_data.plot('date', 'daily_vaccinations')
                 plt.show()
 
                 break
