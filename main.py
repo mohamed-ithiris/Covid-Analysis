@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 def case_per_country():
@@ -54,6 +55,111 @@ def case_per_country():
             print("Enter valid continents name")
 
 
+def relationship_recoverd_death():
+    while True:
+        try:
+            print("Please, enter one of the following continent names:")
+            print(
+                "North America, South America, Asia, Europe, Africa, Australia/Oceania")
+            userInput = input("Please type the continents's name:")
+            continents = [
+                "North America",
+                "South America",
+                "Asia",
+                "Europe",
+                "Africa",
+                "Australia/Oceania"
+            ]
+            if (userInput in continents):
+                csv_data = pd.read_csv(
+                    "./worldometer_data.csv",
+                    usecols=[
+                        'Country/Region',
+                        'Continent',
+                        'TotalRecovered',
+                        'TotalDeaths'
+                    ]
+                )
+
+                filterContinent = csv_data['Continent'] == userInput
+                filtered_data = csv_data[filterContinent]
+
+                sns.lmplot(
+                    x='TotalDeaths',
+                    y='TotalRecovered',
+                    data=filtered_data
+                )
+                plt.show()
+                break
+            else:
+                print("Enter valid continents name")
+        except ValueError:
+            print("Enter valid continents name")
+
+
+def test_per_contitent():
+    while True:
+        try:
+            csv_data = pd.read_csv(
+                "./worldometer_data.csv",
+                usecols=[
+                    'Country/Region',
+                    'Continent',
+                    'TotalRecovered',
+                    'TotalDeaths'
+                ]
+            )
+            df = pd.DataFrame(
+                csv_data,
+                columns=['Continent']
+            )
+            duplicate = df[df.duplicated()].count()
+            print(duplicate)
+            break
+        except ValueError:
+            print("Enter valid continents name")
+
+
+def daily_vaccination():
+    while True:
+        try:
+            print("Please, enter one of the following country names:")
+            print("Ireland, USA, India, Brazil, Japan, Australia")
+            userInput = input("Please type the countires's name:")
+            country = [
+                "Ireland",
+                "USA",
+                "India",
+                "Brazil",
+                "Japan",
+                "Australia"
+            ]
+            if (userInput in country):
+                csv_data = pd.read_csv(
+                    "./country_vaccinations.csv",
+                    usecols=[
+                        'country',
+                        'date',
+                        'daily_vaccinations',
+                    ]
+                )
+
+                filterContinent = csv_data['country'] == userInput
+                filtered_data = csv_data[filterContinent]
+                filtered_data.plot( 'date' , 'daily_vaccinations' )
+                plt.show()
+
+                break
+            else:
+                print("Enter valid continents name")
+        except ValueError:
+            print("Enter valid continents name")
+
+
+def application_exit():
+    print("Thank you.")
+
+
 def main():
     while True:
         print("Welcome to our analysis Pipeline for COVID-19 data")
@@ -70,20 +176,16 @@ def main():
                 case_per_country()
                 break
             elif (val == 2):
-                print("Please, enter one of the following continent names:")
-                print(
-                    "North America, South America, Asia, Europe, Africa, Australia/Oceania")
-                print("Please type the continents's name")
+                relationship_recoverd_death()
                 break
             elif (val == 3):
-                print("option 3")
+                test_per_contitent()
                 break
             elif (val == 4):
-                print("Please, enter one of the following country names:")
-                print("Ireland, USA, India, Brazil, Japan, Australia")
+                daily_vaccination()
                 break
             elif (val == 5):
-                print("Existed")
+                application_exit()
                 break
             elif (val > 5 or val < 1):
                 print("Enter number between 1 to 5!")
